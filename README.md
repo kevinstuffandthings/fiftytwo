@@ -1,4 +1,4 @@
-# FiftyTwo [![Build Status](https://travis-ci.com/kevinstuffandthings/fiftytwo.svg?branch=master)](https://travis-ci.com/kevinstuffandthings/fiftytwo) [![Gem Version](https://badge.fury.io/rb/fiftytwo.svg)](https://badge.fury.io/rb/fiftytwo)
+# FiftyTwo ![Build Status](https://github.com/kevinstuffandthings/fiftytwo/actions/workflows/ruby.yml/badge.svg) [![Gem Version](https://badge.fury.io/rb/fiftytwo.svg)](https://badge.fury.io/rb/fiftytwo)
 
 A [standard 52-card deck](https://en.wikipedia.org/wiki/Standard_52-card_deck), written in Ruby.
 
