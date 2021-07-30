@@ -45,9 +45,13 @@ module FiftyTwo
       value <=> other.value
     end
 
-    def to_s = name.titleize
+    def to_s
+      name.titleize
+    end
 
-    def identifier = name.to_i > 0 ? name : name[0].upcase
+    def identifier
+      name.to_i > 0 ? name : name[0].upcase
+    end
     alias_method :code, :identifier
   end
 end

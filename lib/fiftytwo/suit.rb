@@ -34,8 +34,12 @@ module FiftyTwo
       name <=> other.name
     end
 
-    def to_s = name.titleize
+    def to_s
+      name.titleize
+    end
 
-    def identifier = name[0].upcase
+    def identifier
+      name[0].upcase
+    end
   end
 end
