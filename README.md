@@ -111,7 +111,7 @@ my_hand = FiftyTwo::Hand.new
 your_hand = FiftyTwo::Hand.new
 # => #<FiftyTwo::Hand:0x00007fb3d21c68c0 @cards=[]>
 
-deck.deal([my_hand, your_hand], hand_size: 5)
+deck.deal([my_hand, your_hand], 5)
 "Deck has #{deck.count} cards, I have #{my_hand.count} cards, you have #{your_hand.count} cards"
 # => "Deck has 42 cards, I have 5 cards, you have 5 cards"
 
@@ -144,6 +144,15 @@ puts my_hand.render, your_hand.render
 
 deck.count
 # => 43
+```
+
+And finally, release your hand back to the dealer:
+```ruby
+my_hand.release
+your_hand.release
+
+"Deck has #{deck.count} cards, I have #{my_hand.count} cards, you have #{your_hand.count} cards"
+# => "Deck has 52 cards, I have 0 cards, you have 0 cards"
 ```
 
 # Problems?

@@ -22,9 +22,9 @@ module FiftyTwo
       end
     end
 
-    def deal(hands, hand_size: 1)
-      hand_size.times.each do |card_idx|
-        hands.each { |h| h << draw }
+    def deal(hands, num_cards = 1)
+      num_cards.times.each do |card_idx|
+        Array(hands).each { |h| h << draw }
       end
 
       hands

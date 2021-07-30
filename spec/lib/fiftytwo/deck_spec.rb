@@ -269,7 +269,7 @@ module FiftyTwo
         card8 = subject[7]
         card9 = subject[8]
 
-        subject.deal(hands, hand_size: 3)
+        subject.deal(hands, 3)
         expect(subject.count).to eq 43
         expect(hand1.cards).to match_array [card1, card4, card7]
         expect(hand2.cards).to match_array [card2, card5, card8]
