@@ -132,7 +132,7 @@ your_hand.aces.count
 
 Pass your cards around:
 ```ruby
-my_hand.transfer("4S", your_hand) # try an array of card identifiers, too!
+my_hand.transfer("4S", your_hand) # try an array of card identifiers and/or indexes, too!
 puts my_hand.render, your_hand.render
 # 3♦  5♦  7♥  2♣
 # 5♠  6♠ 10♦  Q♣  A♦  4♠

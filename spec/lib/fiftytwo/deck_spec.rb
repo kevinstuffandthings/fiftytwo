@@ -186,20 +186,32 @@ module FiftyTwo
 
       it "can transfer a card by object" do
         subject.transfer(subject[1], hand)
-        expect(subject.count).to eq 2
-        expect(hand.count).to eq 1
+        expect(subject.map(&:identifier)).to match_array ["3C", "10D"]
+        expect(hand.map(&:identifier)).to match_array ["9D"]
       end
 
       it "can transfer a card by identifier" do
         subject.transfer("3C", hand)
-        expect(subject.count).to eq 2
-        expect(hand.count).to eq 1
+        expect(subject.map(&:identifier)).to match_array ["9D", "10D"]
+        expect(hand.map(&:identifier)).to match_array ["3C"]
+      end
+
+      it "can transfer a card by index" do
+        subject.transfer(0, hand)
+        expect(subject.map(&:identifier)).to match_array ["9D", "10D"]
+        expect(hand.map(&:identifier)).to match_array ["3C"]
       end
 
       it "can transfer multiple cards" do
         subject.transfer(%w[3C 10D], hand)
-        expect(subject.count).to eq 1
-        expect(hand.count).to eq 2
+        expect(subject.map(&:identifier)).to match_array ["9D"]
+        expect(hand.map(&:identifier)).to match_array ["3C", "10D"]
+      end
+
+      it "can transfer multiple cards by a variety of identification methods" do
+        subject.transfer(["3C", 1], hand)
+        expect(subject.map(&:identifier)).to match_array ["10D"]
+        expect(hand.map(&:identifier)).to match_array ["3C", "9D"]
       end
 
       it "will not transfer any and raise an error if any one card reference is invalid" do

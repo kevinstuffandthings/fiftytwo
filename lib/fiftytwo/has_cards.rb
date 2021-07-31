@@ -21,6 +21,7 @@ module FiftyTwo
     end
 
     def locate(identifier)
+      return cards[identifier] if identifier.is_a?(Integer)
       cards.find { |c| c.identifier == identifier.upcase }
     end
 
