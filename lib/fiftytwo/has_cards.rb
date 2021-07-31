@@ -29,6 +29,10 @@ module FiftyTwo
       gather(cards).map { |c| (destination || c.deck) << self.cards.delete(c) }
     end
 
+    %i[rank suit].each do |attribute|
+      define_method(attribute.to_s.pluralize) { cards.map { |c| c.send(attribute) }.uniq.sort }
+    end
+
     FiftyTwo::Suit::ALL.each do |suit|
       define_method(suit.name) { select(suit.name) }
     end

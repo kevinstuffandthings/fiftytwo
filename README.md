@@ -130,6 +130,12 @@ your_hand.aces.count
 # => 1
 ```
 
+Examine the overall composition of a hand:
+```ruby
+your_hand.suits.map(&:name) # values are ordered ascending. try ranks too!
+# => ["clubs", "diamonds", "spades"]
+```
+
 Pass your cards around:
 ```ruby
 my_hand.transfer("4S", your_hand) # try an array of card identifiers and/or indexes, too!

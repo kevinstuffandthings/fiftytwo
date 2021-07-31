@@ -56,8 +56,23 @@ module FiftyTwo
       end
     end
 
+    context "ranks/suits" do
+      let(:subject) { minideck }
+
+      it "can pull the unique ranks from a deck" do
+        items = subject.ranks
+        items.each { |i| expect(i).to be_a FiftyTwo::Rank }
+        expect(items.map(&:value)).to eq [3, 9, 10]
+      end
+
+      it "can pull the unique suits from a deck" do
+        items = subject.suits
+        items.each { |i| expect(i).to be_a FiftyTwo::Suit }
+        expect(items.map(&:name)).to eq %w[clubs diamonds]
+      end
+    end
+
     context "filtering" do
-      require "pry"
       it "can find diamonds" do
         cards = subject.diamonds
         expect(cards.count).to eq 13
