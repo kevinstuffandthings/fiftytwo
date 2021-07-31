@@ -24,11 +24,8 @@ module FiftyTwo
       cards.find { |c| c.identifier == identifier.upcase }
     end
 
-    def transfer(card, destination = nil)
-      card = locate(card) unless card.is_a?(FiftyTwo::Card)
-      raise CardUnavailableError if card.nil?
-      raise CardUnavailableError unless cards.include?(card)
-      (destination || card.deck) << cards.delete(card)
+    def transfer(cards, destination = nil)
+      gather(cards).map { |c| (destination || c.deck) << self.cards.delete(c) }
     end
 
     FiftyTwo::Suit::ALL.each do |suit|
@@ -47,6 +44,15 @@ module FiftyTwo
 
     def select(identifier)
       self.class.new(cards.select { |c| c.send("#{identifier}?") })
+    end
+
+    def gather(cards)
+      Array(cards).map do |card|
+        card = locate(card) unless card.is_a?(FiftyTwo::Card)
+        raise CardUnavailableError if card.nil?
+        raise CardUnavailableError unless self.cards.include?(card)
+        card
+      end
     end
   end
 end

@@ -116,15 +116,15 @@ deck.deal([my_hand, your_hand], 5)
 # => "Deck has 42 cards, I have 5 cards, you have 5 cards"
 
 puts my_hand.render, your_hand.render # by the way renderings are colored red/black in your terminal, just like the suit!
- 3♦  4♠  5♦  7♥  2♣
- 6♠  A♦  5♠ 10♦  Q♣
+# 3♦  4♠  5♦  7♥  2♣
+# 6♠  A♦  5♠ 10♦  Q♣
 ```
 
 Hands, just like the deck, can be shuffled, sorted, searched, etc:
 ```ruby
 your_hand.sort!
 puts your_hand.render
- 5♠  6♠ 10♦  Q♣  A♦
+# 5♠  6♠ 10♦  Q♣  A♦
 
 your_hand.aces.count
 # => 1
@@ -132,15 +132,15 @@ your_hand.aces.count
 
 Pass your cards around:
 ```ruby
-my_hand.transfer("4S", your_hand)
+my_hand.transfer("4S", your_hand) # try an array of card identifiers, too!
 puts my_hand.render, your_hand.render
- 3♦  5♦  7♥  2♣
- 5♠  6♠ 10♦  Q♣  A♦  4♠
+# 3♦  5♦  7♥  2♣
+# 5♠  6♠ 10♦  Q♣  A♦  4♠
 
 your_hand.transfer("QC") # goes back to the deck
 puts my_hand.render, your_hand.render
- 3♦  5♦  7♥  2♣
- 5♠  6♠ 10♦  A♦  4♠
+# 3♦  5♦  7♥  2♣
+# 5♠  6♠ 10♦  A♦  4♠
 
 deck.count
 # => 43
@@ -153,6 +153,44 @@ your_hand.release
 
 "Deck has #{deck.count} cards, I have #{my_hand.count} cards, you have #{your_hand.count} cards"
 # => "Deck has 52 cards, I have 0 cards, you have 0 cards"
+```
+
+## Example: 5 card draw poker
+_Reminder, we are implementing a deck of cards, and the operations you can perform with that deck. Evaluation of hands is dependent upon some
+particular game, and is outside the scope of this gem!_
+
+```ruby
+require "fiftytwo"
+
+deck = FiftyTwo::Deck.standard
+deck.shuffle!
+
+my_hand = FiftyTwo::Hand.new
+your_hand = FiftyTwo::Hand.new
+discard = FiftyTwo::Hand.new
+
+deck.deal([your_hand, my_hand], 5)
+
+[my_hand, your_hand].each(&:sort!)
+puts "you: #{your_hand.render}", "me:  #{my_hand.render}"
+# you:  6♦  6♠  7♠  K♣  A♦
+# me:   2♦  5♥  8♠  9♥ 10♦
+
+your_hand.transfer(%w[7s kc], discard)
+deck.deal(your_hand, 2)
+
+my_hand.transfer(%w[2D 5H], discard)
+deck.deal(my_hand, 2)
+
+[my_hand, your_hand].each(&:sort!)
+puts "you: #{your_hand.render}", "me:  #{my_hand.render}"
+# you:  4♠  6♦  6♠  K♦  A♦
+# me:   2♣  4♣  8♠  9♥ 10♦
+
+puts "Congratulations, you win!"
+
+[my_hand, your_hand, discard].each(&:release)
+deck.shuffle!
 ```
 
 # Problems?

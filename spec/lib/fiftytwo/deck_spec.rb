@@ -7,6 +7,7 @@ module FiftyTwo
     before(:each) do
       minideck << FiftyTwo::Card.new(minideck, FiftyTwo::Rank::THREE, FiftyTwo::Suit::CLUBS)
       minideck << FiftyTwo::Card.new(minideck, FiftyTwo::Rank::NINE, FiftyTwo::Suit::DIAMONDS)
+      minideck << FiftyTwo::Card.new(minideck, FiftyTwo::Rank::TEN, FiftyTwo::Suit::DIAMONDS)
     end
 
     it "is a deck, made up of cards" do
@@ -117,17 +118,22 @@ module FiftyTwo
       let(:subject) { minideck }
 
       it "takes cards in order from the deck" do
-        expect(subject.count).to eq 2
+        expect(subject.count).to eq 3
 
         card = subject.draw
-        expect(subject.count).to eq 1
+        expect(subject.count).to eq 2
         expect(card).to be_a FiftyTwo::Card
         expect(card.identifier).to eq "3C"
 
         card = subject.draw
-        expect(subject.count).to eq 0
+        expect(subject.count).to eq 1
         expect(card).to be_a FiftyTwo::Card
         expect(card.identifier).to eq "9D"
+
+        card = subject.draw
+        expect(subject.count).to eq 0
+        expect(card).to be_a FiftyTwo::Card
+        expect(card.identifier).to eq "10D"
 
         card = subject.draw
         expect(subject.count).to eq 0
@@ -174,20 +180,32 @@ module FiftyTwo
       let(:hand) { FiftyTwo::Hand.new }
 
       it "has a deck with 2 cards, and a hand with none" do
-        expect(subject.count).to eq 2
+        expect(subject.count).to eq 3
         expect(hand.count).to eq 0
       end
 
       it "can transfer a card by object" do
         subject.transfer(subject[1], hand)
-        expect(subject.count).to eq 1
+        expect(subject.count).to eq 2
         expect(hand.count).to eq 1
       end
 
       it "can transfer a card by identifier" do
         subject.transfer("3C", hand)
-        expect(subject.count).to eq 1
+        expect(subject.count).to eq 2
         expect(hand.count).to eq 1
+      end
+
+      it "can transfer multiple cards" do
+        subject.transfer(%w[3C 10D], hand)
+        expect(subject.count).to eq 1
+        expect(hand.count).to eq 2
+      end
+
+      it "will not transfer any and raise an error if any one card reference is invalid" do
+        expect { subject.transfer(%w[3C 10K], hand) }.to raise_error FiftyTwo::HasCards::CardUnavailableError
+        expect(subject.count).to eq 3
+        expect(hand.count).to eq 0
       end
 
       context "missing card" do
@@ -206,14 +224,14 @@ module FiftyTwo
         let(:card) { subject[1] }
         before(:each) { subject.transfer(card, hand) }
 
-        it "starts with a card in the hand and a card in the deck" do
-          expect(subject.count).to eq 1
+        it "starts with a card in the hand and 2 in the deck" do
+          expect(subject.count).to eq 2
           expect(hand.count).to eq 1
         end
 
         it "can transfer a card from a hand back to the bottom of its originating deck" do
           hand.transfer(card)
-          expect(subject.count).to eq 2
+          expect(subject.count).to eq 3
           expect(hand.count).to eq 0
           expect(subject.last).to eq card
         end
@@ -230,7 +248,7 @@ module FiftyTwo
       end
 
       it "renders the set of cards in this deck" do
-        expect(subject.render).to eq "CARD0 CARD1"
+        expect(subject.render).to eq "CARD0 CARD1 CARD2"
       end
     end
 
